@@ -1,12 +1,1 @@
-<ngx-charts-line-chart
-[view]="[model?.width, model?.height]"
-[results]="model?.data"
-[xAxisLabel]="model?.xLabel"
-[yAxisLabel]="model?.yLabel"
-[legend]="model?.legend"
-[showXAxisLabel]="model?.xLabel"
-[showYAxisLabel]="model?.yLabel"
-[xAxis]="true"
-[yAxis]="true"
-[gradient]="true">
-</ngx-charts-line-chart>
+<div echarts [options]="model" class="demo-chart"></div>

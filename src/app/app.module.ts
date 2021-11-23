@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
-
+import { CommonModule } from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -24,8 +24,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LineChartComponent } from './graph/line-chart/line-chart.component';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   declarations: [
@@ -53,8 +53,10 @@ import { LineChartComponent } from './graph/line-chart/line-chart.component';
     MatFormFieldModule,
     MatTabsModule,
     HttpClientModule,
-    NgxChartsModule
-  ],
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    })
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

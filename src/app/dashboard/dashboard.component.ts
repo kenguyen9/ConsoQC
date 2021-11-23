@@ -2,6 +2,7 @@ import { GraphModel } from './../model/GraphModel';
 import { ConsommationROW } from './../model/ConsommationROW';
 import { ConsoQCApiAWSService } from './../services/conso-qc-api-aws.service';
 import { Component, OnInit } from '@angular/core';
+import { EChartsOption } from 'echarts';
 
 interface TabGroup {
   title: string;
@@ -17,7 +18,7 @@ export class DashboardComponent implements OnInit {
   constructor(private apiConsoQC: ConsoQCApiAWSService) { }
 
 
-  allData: { [id: string]: GraphModel } = {};
+  allData: { [id: string]: EChartsOption } = {};
 
   tabsGroup: TabGroup[] = [
     {
@@ -49,24 +50,58 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.apiConsoQC.getAVGConso().subscribe(
       (res) => {
-        let total = {
-          name: "Globale",
-          series: []
-        }
-        for (let day of res) {
-          total.series.push({ value: day.computeTotal(), name: day.toDateString() })
-        }
-        this.allData['global'] = { data: [total], height: 250, width: 1000, xLabel: 'Journée', yLabel: 'Consommation moyenne' };
+        /*
+ chartOption: EChartsOption = {
+    xAxis: {
+      type: 'category',
+      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    },
+    yAxis: {
+      type: 'value',
+    },
+    series: [
+      {
+        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        type: 'line',
+      },
+    ],
+  };*/
+
+
         const keys = Object.keys(res[0]);
+        keys.push('global');
+        let dataX = [];
         for (const key of keys) {
-          let keyTotal = {
-            name: key,
-            series: []
-          };
+
+          let dataY = []
+
           for (let day of res) {
-            keyTotal.series.push({ value: day[key], name: day.toDateString() })
+            if (key == 'global') {
+              dataY.push(day.computeTotal());
+              dataX.push(day.toDateString());
+            } else {
+              dataY.push(day[key]);
+            }
           }
-          this.allData[key] = { data: [keyTotal], height: 250, width: 1000, xLabel: 'Journée', yLabel: 'Consommation moyenne' };
+          this.allData[key] = {
+            tooltip: {
+              trigger: 'axis'
+            },
+            darkMode: true,
+            xAxis: {
+              type: 'category',
+              data: dataX
+            },
+            yAxis: { type: 'value' },
+            series: [
+              {
+                type: 'line',
+                name: key,
+                data: dataY
+              }
+            ]
+          };
+
         }
       }
     )

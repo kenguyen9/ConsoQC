@@ -1,5 +1,6 @@
 import { GraphModel } from './../../model/GraphModel';
 import { Component, Input, OnInit } from '@angular/core';
+import { EChartsOption } from 'echarts';
 
 @Component({
   selector: 'app-line-chart',
@@ -9,11 +10,13 @@ import { Component, Input, OnInit } from '@angular/core';
 export class LineChartComponent implements OnInit {
 
 
-  @Input('ChartModel') model: GraphModel;
+  @Input('ChartModel') model: EChartsOption;
 
   constructor() { }
 
   ngOnInit(): void {
   }
+
+
 
 }
