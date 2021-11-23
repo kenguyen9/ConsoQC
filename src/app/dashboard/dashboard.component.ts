@@ -3,6 +3,7 @@ import { ConsommationROW } from './../model/ConsommationROW';
 import { ConsoQCApiAWSService } from './../services/conso-qc-api-aws.service';
 import { Component, OnInit } from '@angular/core';
 import { EChartsOption } from 'echarts';
+import { forkJoin } from 'rxjs';
 
 interface TabGroup {
   title: string;
@@ -48,63 +49,68 @@ export class DashboardComponent implements OnInit {
   ]
 
   ngOnInit(): void {
-    this.apiConsoQC.getAVGConso().subscribe(
+
+    forkJoin([this.apiConsoQC.getAVGConso(), this.apiConsoQC.getClientConso()]).subscribe(
       (res) => {
-        /*
- chartOption: EChartsOption = {
-    xAxis: {
-      type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    },
-    yAxis: {
-      type: 'value',
-    },
-    series: [
-      {
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
-        type: 'line',
-      },
-    ],
-  };*/
-
-
-        const keys = Object.keys(res[0]);
-        keys.push('global');
-        let dataX = [];
-        for (const key of keys) {
-
-          let dataY = []
-
-          for (let day of res) {
-            if (key == 'global') {
-              dataY.push(day.computeTotal());
-              dataX.push(day.toDateString());
-            } else {
-              dataY.push(day[key]);
-            }
-          }
-          this.allData[key] = {
-            tooltip: {
-              trigger: 'axis'
-            },
-            darkMode: true,
-            xAxis: {
-              type: 'category',
-              data: dataX
-            },
-            yAxis: { type: 'value' },
-            series: [
-              {
-                type: 'line',
-                name: key,
-                data: dataY
-              }
-            ]
-          };
-
-        }
+        console.log(res[0].length, res[1].length)
+        this.buildAVGConsoLineChart(res[0], res[1])
       }
     )
+  }
+
+
+  buildAVGConsoLineChart(resAVG: ConsommationROW[], resClient: ConsommationROW[]){
+    const keys = Object.keys(resAVG[0]);
+    keys.push('global');
+    let dataX = [];
+    for (let day of resAVG){
+      dataX.push(day.toDateString());
+    }
+    for (const key of keys) {
+
+      let dataYAVG = []
+      let dataYClient = [];
+      for (let day of resAVG) {
+        if (key == 'global') {
+          dataYAVG.push(day.computeTotal());
+        } else {
+          dataYAVG.push(day[key]);
+        }
+      }
+      for (let day of resClient){
+        if (key == 'global') {
+          dataYClient.push(day.computeTotal());
+        } else {
+          dataYClient.push(day[key]);
+        }
+      }
+     this.allData[key] = {
+        tooltip: {
+          trigger: 'axis'
+        },
+        darkMode: true,
+        xAxis: {
+          type: 'category',
+          data: dataX
+        },
+        yAxis: { type: 'value' },
+        series: [
+          {
+            type: 'line',
+            name: key,
+            data: dataYAVG,
+            color:'#c23531'
+          },
+          {
+            type: 'line',
+            name: key,
+            data: dataYClient,
+            color:'#91c7ae'
+          }
+        ]
+      };
+
+    }
   }
 
 }
