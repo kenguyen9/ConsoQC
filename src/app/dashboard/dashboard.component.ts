@@ -56,6 +56,17 @@ export class DashboardComponent implements OnInit {
         this.buildAVGConsoLineChart(res[0], res[1])
       }
     )
+
+
+    /* let data = this.apiConsoQC.getClientConso().subscribe(
+      (res) => {
+        fsdfdsfds
+        sdfdsfdsfsdfs
+
+        console.log(res);
+      }
+    ); */
+
   }
 
 
