@@ -14,21 +14,7 @@ export class ConsoQCApiAWSService {
   getAVGConso(): Observable<ConsommationROW[]> {
     return this.httpClient.get<ConsommationAVGResult[]>(this.AWS_ENDPOINT + "conso").pipe(
       map((res) => {
-        const retValue: ConsommationROW[] = [];
-        for (const r of res) {
-          const keys = Object.keys(r);
-          let consoRow = new ConsommationROW(0, 0, 0, 0, 0, new Date());
-          for (const key of keys) {
-            switch (key) {
-              case 'date':
-                consoRow[key] = new Date(r[key]);
-                break;
-              default:
-                consoRow[key] = Number(r[key]);
-            }
-          }
-          retValue.push(consoRow);
-        }
+        const retValue = this.parseConsommationRow(res);
         return retValue;
       })
     );
@@ -37,24 +23,35 @@ export class ConsoQCApiAWSService {
   getClientConso(): Observable<ConsommationROW[]> {
     return this.httpClient.get<ConsommationROW[]>(this.AWS_ENDPOINT + "client?param=202").pipe(
       map((res) => {
-        const retValue: ConsommationROW[] = [];
-        for (const r of res) {
-          const keys = Object.keys(r);
-          let consoRow = new ConsommationROW(0, 0, 0, 0, 0, new Date());
-          for (const key of keys) {
-            switch (key) {
-              case 'date':
-                consoRow[key] = new Date(r[key]);
-                break;
-              default:
-                consoRow[key] = Number(r[key]);
-            }
-          }
-          retValue.push(consoRow);
-        }
+        const retValue = this.parseConsommationRow(res);
         return retValue;
       })
     );
+  }
+
+  parseConsommationRow(res){
+    const retValue: ConsommationROW[] = [];
+    for (const r of res) {
+      const keys = Object.keys(r);
+      let consoRow = {
+        date: new Date(),
+        property: {}
+      };
+      let global = 0;
+      for (const key of keys) {
+        switch (key) {
+          case 'date':
+            consoRow[key] = new Date(r[key]);
+            break;
+          default:
+            consoRow.property[key] = Number(r[key]);
+            global += consoRow.property[key];
+        }
+      }
+      consoRow.property['global'] = global;
+      retValue.push(consoRow);
+    }
+    return retValue;
   }
 
 

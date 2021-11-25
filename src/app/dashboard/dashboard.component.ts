@@ -71,29 +71,20 @@ export class DashboardComponent implements OnInit {
 
 
   buildAVGConsoLineChart(resAVG: ConsommationROW[], resClient: ConsommationROW[]){
-    const keys = Object.keys(resAVG[0]);
-    keys.push('global');
     let dataX = [];
     for (let day of resAVG){
-      dataX.push(day.toDateString());
+      dataX.push(day.date.toDateString());
     }
-    for (const key of keys) {
 
+    const keys = Object.keys(resAVG[0].property);
+    for (const key of keys) {
       let dataYAVG = []
       let dataYClient = [];
       for (let day of resAVG) {
-        if (key == 'global') {
-          dataYAVG.push(day.computeTotal());
-        } else {
-          dataYAVG.push(day[key]);
-        }
+          dataYAVG.push(day.property[key]);
       }
       for (let day of resClient){
-        if (key == 'global') {
-          dataYClient.push(day.computeTotal());
-        } else {
-          dataYClient.push(day[key]);
-        }
+          dataYClient.push(day.property[key]);
       }
      this.allData[key] = {
         tooltip: {
