@@ -3,7 +3,7 @@ import { GraphModel } from './../../model/GraphModel';
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { EChartsOption } from 'echarts';
 import { Subject } from 'rxjs';
-import { DataModelService } from 'src/app/services/data-model.service';
+import { AppEvent, DataModelService } from 'src/app/services/data-model.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -37,8 +37,9 @@ export class LineChartComponent implements OnInit, OnDestroy {
     this.dataModel.getEvent().pipe(
       takeUntil(this.destroySubject)
     ).subscribe(
-      () => {
-        this.refreshData();
+      (event: AppEvent) => {
+        this.avgConso = this.dataModel.getAvgConso();
+        this.selfConso = this.dataModel.getSelfConso();
         this.buildChart();
       }
     )
@@ -49,13 +50,12 @@ export class LineChartComponent implements OnInit, OnDestroy {
     this.destroySubject.complete();
   }
 
-  refreshData() {
-    this.avgConso = this.dataModel.getAvgConso();
-    this.selfConso = this.dataModel.getSelfConso();
-  }
+
+
+
 
   buildChart() {
-    if (this.avgConso.length > 0 && this.selfConso.length > 0) {
+    if (this.avgConso?.length > 0 && this.selfConso?.length > 0) {
       let dataX = [];
 
       for (let day of this.avgConso) {

@@ -55,6 +55,10 @@ export class MetricsCompareComponent implements OnInit, OnDestroy {
     this.destroySubject.complete();
   }
 
+  getKeys(){
+    return Object.keys(this.dataModel.tabsGroup);
+  }
+
   refreshData() {
     this.avgConso = this.dataModel.getAvgConso();
     this.selfConso = this.dataModel.getSelfConso();

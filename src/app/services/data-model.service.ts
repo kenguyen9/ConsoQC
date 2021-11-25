@@ -8,12 +8,20 @@ export interface TabGroup {
   key: string;
 }
 
+export enum EventType {
+  DATE_CHANGED = 'DATE_CHANGED',
+  DATA_CHANGED = 'DATA_CHANGED'
+}
+export interface AppEvent {
+  data: any,
+  event: EventType
+}
 @Injectable({
   providedIn: 'root'
 })
 export class DataModelService {
 
-  tabsGroup: {[key: string]: string} = {
+  tabsGroup: { [key: string]: string } = {
     'global': 'Global',
     'electromenager': 'Electroménager',
     'chauffageLocaux': 'Chauffage des pièces',
@@ -27,39 +35,90 @@ export class DataModelService {
   private _avgConso: ConsommationROW[];
   private _selfConso: ConsommationROW[];
 
+  private _dateStart: Date = new Date();
+  private _dateEnd: Date = new Date();
+
   private eventEmitter = new Subject<any>();
 
-  refreshData(){
+  refreshData() {
     forkJoin([this.apiConsoQC.getAVGConso(), this.apiConsoQC.getClientConso()]).subscribe(
       (res) => {
-        console.log(res[0].length, res[1].length)
         this.setAvgConso(res[0]);
         this.setSelfConso(res[1]);
-        this.fireEvent();
+        this.computeStartEndDate();
+        this.fireEvent({
+          event: EventType.DATA_CHANGED,
+          data: {
+            avg: this.getAvgConso(),
+            self: this.getSelfConso()
+          }
+        });
       }
     )
   }
 
-  public getEvent(){
+  public getEvent() {
     return this.eventEmitter.asObservable();
   }
 
-  private fireEvent(){
-    this.eventEmitter.next();
+  private fireEvent(event: AppEvent) {
+    this.eventEmitter.next(event);
   }
 
-  setAvgConso(values: ConsommationROW[]){
+  setAvgConso(values: ConsommationROW[]) {
     this._avgConso = values;
   }
-  setSelfConso(values: ConsommationROW[]){
+  setSelfConso(values: ConsommationROW[]) {
     this._selfConso = values;
   }
 
-  getAvgConso(){
-    return this._avgConso;
+  setDate(dateStart?: Date, dateEnd?: Date) {
+    if (dateStart) {
+      this._dateStart = dateStart;
+    }
+    if (dateEnd) {
+      this._dateEnd = dateEnd;
+    }
+    this.fireEvent({
+      event: EventType.DATE_CHANGED,
+      data: {
+        dateStart: this._dateStart,
+        dateEnd: this._dateEnd
+      }
+    })
   }
-  getSelfConso(){
-    return this._selfConso;
+  getDate() {
+    return { dateStart: this._dateStart, dateEnd: this._dateEnd };
+  }
+  computeStartEndDate() {
+    const rows = this._avgConso;
+    if (rows.length > 0) {
+      let dateStart: Date = rows[0].date;
+      let dateEnd: Date = rows[0].date;
+      for (const day of rows) {
+        if (day.date.valueOf() > dateEnd.valueOf()) {
+          dateEnd = day.date;
+        }
+        if (day.date.valueOf() < dateStart.valueOf()) {
+          dateStart = day.date;
+        }
+      }
+      this.setDate(dateStart, dateEnd);
+    }
+  }
+  getAvgConso() {
+    let retValue: ConsommationROW[] = [];
+    retValue = this._avgConso.filter(day => {
+      return (day.date.valueOf() >= this._dateStart.valueOf()) && (day.date.valueOf() <= this._dateEnd.valueOf())
+    })
+    return retValue;
+  }
+  getSelfConso() {
+    let retValue: ConsommationROW[] = [];
+    retValue = this._selfConso.filter(day => {
+      return (day.date.valueOf() >= this._dateStart.valueOf()) && (day.date.valueOf() <= this._dateEnd.valueOf())
+    })
+    return retValue;
   }
 
 }

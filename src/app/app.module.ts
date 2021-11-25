@@ -19,6 +19,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSelectModule} from '@angular/material/select';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatListModule} from '@angular/material/list';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -29,6 +31,7 @@ import { LineChartComponent } from './graph/line-chart/line-chart.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { LoginComponent } from './login/login.component';
 import { MetricsCompareComponent } from './graph/metrics-compare/metrics-compare.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -47,17 +50,21 @@ import { MetricsCompareComponent } from './graph/metrics-compare/metrics-compare
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
+    MatListModule,
     MatDatepickerModule,
     MatExpansionModule,
     MatDialogModule,
     MatToolbarModule,
+    MatNativeDateModule,
     MatSelectModule,
     MatProgressBarModule,
+    MatDividerModule,
     MatMenuModule,
     MatInputModule,
     MatIconModule,
     MatFormFieldModule,
     MatTabsModule,
+
     HttpClientModule,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts')
