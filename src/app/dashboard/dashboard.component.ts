@@ -73,7 +73,7 @@ export class DashboardComponent implements OnInit {
   buildAVGConsoLineChart(resAVG: ConsommationROW[], resClient: ConsommationROW[]){
     let dataX = [];
     for (let day of resAVG){
-      dataX.push(day.date.toDateString());
+      dataX.push(day.date.toLocaleDateString());
     }
 
     const keys = Object.keys(resAVG[0].property);
