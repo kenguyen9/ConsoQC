@@ -26,12 +26,14 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { LineChartComponent } from './graph/line-chart/line-chart.component';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    LineChartComponent
+    LineChartComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
