@@ -8,11 +8,18 @@
     <mat-icon>menu</mat-icon>
   </span>
 </mat-toolbar>
-<mat-tab-group mat-align-tabs="center">
-  <ng-container *ngFor="let tab of tabsGroup">
-    <mat-tab [label]="tab.title">
-          <app-line-chart [ChartModel]="allData[tab.key]"></app-line-chart>
-    </mat-tab>
-  </ng-container>
 
-</mat-tab-group>
+<div class="tabs">
+  <mat-tab-group mat-align-tabs="center">
+    <ng-container *ngFor="let tab of tabsGroup">
+      <mat-tab [label]="tab.name">
+        <div class="tab-content">
+          <app-line-chart [key]="tab.key" style="width: 70%;"></app-line-chart>
+          <app-metrics-compare [key]="tab.key" style="width: 30%;"></app-metrics-compare>
+        </div>
+
+      </mat-tab>
+    </ng-container>
+
+  </mat-tab-group>
+</div>

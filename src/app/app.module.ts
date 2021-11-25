@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -27,13 +28,15 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { LineChartComponent } from './graph/line-chart/line-chart.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { LoginComponent } from './login/login.component';
+import { MetricsCompareComponent } from './graph/metrics-compare/metrics-compare.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     LineChartComponent,
-    LoginComponent
+    LoginComponent,
+    MetricsCompareComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +48,7 @@ import { LoginComponent } from './login/login.component';
     MatCardModule,
     MatCheckboxModule,
     MatDatepickerModule,
+    MatExpansionModule,
     MatDialogModule,
     MatToolbarModule,
     MatSelectModule,

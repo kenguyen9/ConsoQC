@@ -13,4 +13,17 @@
       display: flex;
     }
   }
+
+  .tabs{
+    display: flex;
+    max-height: 90%;
+
+    mat-tab-group{
+      width: 100%;
+    }
+
+    .tab-content{
+      display: flex;
+    }
+  }
 }
