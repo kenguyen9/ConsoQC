@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   dateStart: Date;
   dateEnd: Date;
 
+
   firstInstance = true;
   initialStart: Date;
   initialEnd: Date;
@@ -46,6 +47,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.initialStart = data.dateStart;
             this.initialEnd = data.dateEnd;
             this.firstInstance = false;
+            console.log(this.firstInstance)
           }
           this.dateStart = data.dateStart;
           this.dateEnd = data.dateEnd;

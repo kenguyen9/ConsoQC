@@ -12,6 +12,9 @@ const routes: Routes = [
   },
   {
     path: '', redirectTo: 'Connexion', pathMatch:'full'
+  },
+  {
+    path: '**', redirectTo: 'Connexion', pathMatch: 'full'
   }
 ];
 

@@ -3,42 +3,49 @@
   flex-direction: column;
   height: 100%;
 
-  overflow:hidden;
+  overflow: hidden;
 
-  mat-toolbar{
+  mat-toolbar {
     flex: 0 0 auto;
     span {
       flex: 1 1 auto;
       align-items: center;
       display: flex;
     }
-    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
+    background: rgb(0, 144, 28);
+    background: linear-gradient(
+      158deg,
+      rgba(0, 144, 28, 1) 0%,
+      rgb(28, 196, 2) 100%
+    );
+    color: white;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
   }
 
-  .datepicker{
+  .datepicker {
     display: flex;
     flex-direction: row;
     box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
     margin-bottom: 10px;
     align-items: center;
-    mat-form-field{
+    mat-form-field {
       width: 100%;
       margin: 5px;
 
-      ::ng-deep .mat-form-field-wrapper{
+      ::ng-deep .mat-form-field-wrapper {
         padding-bottom: 0px;
-     }
+      }
     }
   }
-  .tabs{
+  .tabs {
     display: flex;
     max-height: 90%;
 
-    mat-tab-group{
+    mat-tab-group {
       width: 100%;
     }
 
-    .tab-content{
+    .tab-content {
       display: flex;
     }
   }

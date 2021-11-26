@@ -13,6 +13,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -32,6 +33,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { LoginComponent } from './login/login.component';
 import { MetricsCompareComponent } from './graph/metrics-compare/metrics-compare.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { DayByDayComponent } from './graph/day-by-day/day-by-day.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     DashboardComponent,
     LineChartComponent,
     LoginComponent,
-    MetricsCompareComponent
+    MetricsCompareComponent,
+    DayByDayComponent
   ],
   imports: [
     BrowserModule,
@@ -56,6 +59,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDialogModule,
     MatToolbarModule,
     MatNativeDateModule,
+    MatProgressSpinnerModule,
     MatSelectModule,
     MatProgressBarModule,
     MatDividerModule,
