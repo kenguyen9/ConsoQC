@@ -68,6 +68,7 @@ export class DayByDayComponent implements OnInit {
     }
     let totAVG = 0;
     const avgConso = this.avgConso.find(day => day.date.valueOf() == this.currentDate.valueOf());
+    console.log(this._key, avgConso);
     if (avgConso){
       totAVG += avgConso.property[this._key];
     }

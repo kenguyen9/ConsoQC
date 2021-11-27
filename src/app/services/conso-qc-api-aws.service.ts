@@ -42,6 +42,7 @@ export class ConsoQCApiAWSService {
         switch (key) {
           case 'date':
             consoRow[key] = new Date(r[key]);
+            consoRow[key].setHours(0);
             break;
           default:
             consoRow.property[key] = Number(r[key]);

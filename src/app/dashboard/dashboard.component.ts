@@ -32,6 +32,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   initialStart: Date;
   initialEnd: Date;
 
+
+
   ngOnInit(): void {
 
     this.buildTabs();
