@@ -21,7 +21,7 @@ export class ConsoQCApiAWSService {
   }
 
   getClientConso(): Observable<ConsommationROW[]> {
-    return this.httpClient.get<ConsommationROW[]>(this.AWS_ENDPOINT + "client?param=202").pipe(
+    return this.httpClient.get<ConsommationROW[]>(this.AWS_ENDPOINT + "client?id=202").pipe(
       map((res) => {
         const retValue = this.parseConsommationRow(res);
         return retValue;

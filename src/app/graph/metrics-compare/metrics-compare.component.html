@@ -1,0 +1,29 @@
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <span>{{tabsGroup[key]}}</span>
+      </mat-panel-title>
+      <mat-panel-description style="justify-content: right;">
+        <ng-container *ngIf="diffConsoRate[key] > 0; else negative">
+          <span style="color: red;">+{{diffConsoRate[key]?.toFixed(2)}}%</span>
+        </ng-container>
+        <ng-template #negative>
+          <span style="color: green;">{{diffConsoRate[key]?.toFixed(2)}}%</span>
+        </ng-template>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <mat-list *ngFor="let keyId of getKeys(); let index=index;">
+      <div style="display: flex; flex-direction: row; padding: 10px;">
+        <span style="flex: 1 1 auto;">{{tabsGroup[keyId]}}</span>
+        <ng-container *ngIf="diffConsoRate[keyId] > 0; else negative">
+          <span style="color: red;">+{{diffConsoRate[keyId]?.toFixed(2)}}%</span>
+        </ng-container>
+        <ng-template #negative>
+          <span style="color: green;">{{diffConsoRate[keyId]?.toFixed(2)}}%</span>
+        </ng-template>      </div>
+      <mat-divider *ngIf="index != (getKeys().length-1)"></mat-divider>
+    </mat-list>
+  </mat-expansion-panel>
+</mat-accordion>

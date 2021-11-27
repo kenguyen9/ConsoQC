@@ -1,118 +1,89 @@
+import { AppEvent, DataModelService, EventType } from './../services/data-model.service';
 import { GraphModel } from './../model/GraphModel';
 import { ConsommationROW } from './../model/ConsommationROW';
 import { ConsoQCApiAWSService } from './../services/conso-qc-api-aws.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EChartsOption } from 'echarts';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-interface TabGroup {
-  title: string;
-  key: string;
-}
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
-  constructor(private apiConsoQC: ConsoQCApiAWSService) { }
+  constructor(private dataModel: DataModelService) { }
 
 
-  allData: { [id: string]: EChartsOption } = {};
 
-  tabsGroup: TabGroup[] = [
-    {
-      title: 'Global',
-      key: 'global'
-    },
-    {
-      title: 'Electroménager',
-      key: 'electromenager'
-    },
-    {
-      title: 'Chauffage des locaux',
-      key: 'chauffageLocaux'
-    },
-    {
-      title: 'Chauffage de l\'eau',
-      key: 'chauffageEaux'
-    },
-    {
-      title: 'Climatisation',
-      key: 'climatisation'
-    },
-    {
-      title: 'Eclairage',
-      key: 'eclairage'
-    }
-  ]
+  tabsGroup: { key: string, name: string }[] = [];
+
+  private destroySubject = new Subject<void>();
+
+
+  dateStart: Date;
+  dateEnd: Date;
+
+
+  firstInstance = true;
+  initialStart: Date;
+  initialEnd: Date;
 
   ngOnInit(): void {
 
-    forkJoin([this.apiConsoQC.getAVGConso(), this.apiConsoQC.getClientConso()]).subscribe(
-      (res) => {
-        console.log(res[0].length, res[1].length)
-        this.buildAVGConsoLineChart(res[0], res[1])
+    this.buildTabs();
+    this.dataModel.refreshData();
+
+    this.dataModel.getEvent().pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe(
+      (event: AppEvent) => {
+        if (event.event == EventType.DATE_CHANGED){
+          const data = event.data;
+          if (this.firstInstance && data.dateStart && data.dateEnd){
+            this.initialStart = data.dateStart;
+            this.initialEnd = data.dateEnd;
+            this.firstInstance = false;
+            console.log(this.firstInstance)
+          }
+          this.dateStart = data.dateStart;
+          this.dateEnd = data.dateEnd;
+        }
       }
     )
 
+  }
 
-    /* let data = this.apiConsoQC.getClientConso().subscribe(
-      (res) => {
-        fsdfdsfds
-        sdfdsfdsfsdfs
-
-        console.log(res);
-      }
-    ); */
-
+  ngOnDestroy() {
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 
 
-  buildAVGConsoLineChart(resAVG: ConsommationROW[], resClient: ConsommationROW[]){
-    let dataX = [];
-    for (let day of resAVG){
-      dataX.push(day.date.toLocaleDateString());
-    }
+  setDateStart($event){
+    this.dataModel.setDate($event.value, null);
+  }
+  setDateEnd($event){
+    this.dataModel.setDate(null, $event.value);
+  }
 
-    const keys = Object.keys(resAVG[0].property);
+  resetDate(){
+    this.dataModel.setDate(this.initialStart, this.initialEnd);
+  }
+
+
+  buildTabs() {
+    this.tabsGroup = [];
+    const dataTabsGroup = this.dataModel.tabsGroup;
+    const keys = Object.keys(dataTabsGroup);
     for (const key of keys) {
-      let dataYAVG = []
-      let dataYClient = [];
-      for (let day of resAVG) {
-          dataYAVG.push(day.property[key]);
-      }
-      for (let day of resClient){
-          dataYClient.push(day.property[key]);
-      }
-     this.allData[key] = {
-        tooltip: {
-          trigger: 'axis'
-        },
-        darkMode: true,
-        xAxis: {
-          type: 'category',
-          data: dataX
-        },
-        yAxis: { type: 'value' },
-        series: [
-          {
-            type: 'line',
-            name: key,
-            data: dataYAVG,
-            color:'#c23531'
-          },
-          {
-            type: 'line',
-            name: key,
-            data: dataYClient,
-            color:'#91c7ae'
-          }
-        ]
-      };
-
+      this.tabsGroup.push({ key, name: dataTabsGroup[key] })
     }
   }
+
+
 
 }

@@ -1,0 +1,41 @@
+<div class="content">
+
+
+  <ng-container *ngIf="!firstInstance, else loading">
+    <span class="title">Jour par jour</span>
+    <div class="group">
+      <span style="flex: 1 1 auto;">Ma consommation </span>
+      <span>{{consoTotal?.toFixed(2)}} kWh</span>
+    </div>
+    <div class="group">
+      <span style="flex: 1 1 auto;">Moyenne </span>
+      <span>{{avgConsoTotal?.toFixed(2)}} kWh</span>
+    </div>
+    <div class="group">
+      <span style="flex: 1 1 auto;">Différence</span>
+      <ng-container *ngIf="diffRate>0; else negative">
+        <span style="color: red">+{{diffRate?.toFixed(2)}}%</span>
+      </ng-container>
+      <ng-template #negative>
+        <span style="color: green">{{diffRate?.toFixed(2)}}%</span>
+      </ng-template>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </ng-template>
+  <div class="control">
+    <button mat-icon-button [disabled]="isFirstDay()" (click)="minusDay()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <mat-form-field appearance="fill">
+      <input matInput [matDatepicker]="picker1" [min]="dateStart" [(value)]="currentDate"
+        (dateChange)="dateChanged($event)" [max]="dateEnd" disabled>
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+    </mat-form-field>
+    <button mat-icon-button [disabled]="isLastDay()" (click)="plusDay()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+</div>
