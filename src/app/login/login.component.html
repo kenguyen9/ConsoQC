@@ -1,18 +1,26 @@
-<h1>Bienvenue sur ConsoQC</h1>
-<mat-form-field class="connexion">
-    <mat-label>Identifiant</mat-label>
-    <input matInput type="text" [(ngModel)]="identifiant">
-    <button mat-button *ngIf="identifiant" matSuffix mat-icon-button aria-label="Clear" (click)="identifiant=''" required>
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
-<br>
-<mat-form-field class="mdp">
-  <mat-label>Mot de passe</mat-label>
-    <input matInput type="password" [(ngModel)]="mdp">
-    <button mat-button *ngIf="mdp" matSuffix mat-icon-button (click)="mdp=''" required>
+<div class="content">
+  <span style="font-size: xx-large;">
+    <mat-icon>electrical_services</mat-icon>
+    Conso QC
+  </span>
+  <div class="form">
+    <span class="form-title">Connexion à mon espace client</span>
+    <mat-form-field appearance="fill">
+      <mat-label>Identifiant</mat-label>
+      <input matInput type="text" [(ngModel)]="identifiant">
+      <button mat-button *ngIf="identifiant" matSuffix mat-icon-button aria-label="Clear" (click)="identifiant=''"
+        required>
         <mat-icon>close</mat-icon>
-    </button>
-</mat-form-field>
-<button mat-button color="primary" routerlink="connexion" (click)="connexionFunction()">Connexion</button>
-<span *ngIf="isError">{{message}}</span>
+      </button>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput type="password" [(ngModel)]="mdp">
+      <button mat-button *ngIf="mdp" matSuffix mat-icon-button (click)="mdp=''" required>
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <button mat-raised-button class="button" (click)="connexionFunction()">Connexion</button>
+    <span *ngIf="isError">{{message}}</span>
+  </div>
+</div>

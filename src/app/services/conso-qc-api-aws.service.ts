@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators'
+import { User } from '../model/User';
 @Injectable({
   providedIn: 'root'
 })
@@ -20,8 +21,8 @@ export class ConsoQCApiAWSService {
     );
   }
 
-  getClientConso(): Observable<ConsommationROW[]> {
-    return this.httpClient.get<ConsommationROW[]>(this.AWS_ENDPOINT + "client?id=202").pipe(
+  getClientConso(id: number): Observable<ConsommationROW[]> {
+    return this.httpClient.get<ConsommationROW[]>(this.AWS_ENDPOINT + "client?id="+id).pipe(
       map((res) => {
         const retValue = this.parseConsommationRow(res);
         return retValue;
@@ -29,7 +30,15 @@ export class ConsoQCApiAWSService {
     );
   }
   connexion(id,mdp){
-  return this.httpClient.get(this.AWS_ENDPOINT+"connexion?id="+id+"&mdp="+mdp);
+  return this.httpClient.get(this.AWS_ENDPOINT+"connexion?id="+id+"&mdp="+mdp).pipe(
+    map((res) => {
+      if(res){
+        const retValue: User = res[0];
+        return retValue;
+      }
+      return res;
+    })
+  );
 }
 
   parseConsommationRow(res){

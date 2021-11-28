@@ -1,7 +1,9 @@
+import { Router } from '@angular/router';
 import { ConsommationROW } from './../model/ConsommationROW';
 import { Injectable } from '@angular/core';
 import { forkJoin, Subject } from 'rxjs';
 import { ConsoQCApiAWSService } from './conso-qc-api-aws.service';
+import { User } from '../model/User';
 
 export interface TabGroup {
   title: string;
@@ -30,7 +32,8 @@ export class DataModelService {
     'eclairage': 'Eclairage'
   }
 
-  constructor(private apiConsoQC: ConsoQCApiAWSService) { }
+  constructor(private apiConsoQC: ConsoQCApiAWSService,
+    private router: Router) { }
 
   private _avgConso: ConsommationROW[];
   private _selfConso: ConsommationROW[];
@@ -40,8 +43,25 @@ export class DataModelService {
 
   private eventEmitter = new Subject<any>();
 
+
+  private _user: User;
+
+  set user(value){
+    this._user = value;
+  }
+  get user(){
+    return this._user;
+  }
+
+  disconnect(){
+    delete this._user;
+    this.router.navigate(['Connexion']);
+  }
   refreshData() {
-    forkJoin([this.apiConsoQC.getAVGConso(), this.apiConsoQC.getClientConso()]).subscribe(
+    if (!this._user){
+      this.router.navigate(['Connexion']);
+    }
+    forkJoin([this.apiConsoQC.getAVGConso(), this.apiConsoQC.getClientConso(this._user.idClient)]).subscribe(
       (res) => {
         this.setAvgConso(res[0]);
         this.setSelfConso(res[1]);

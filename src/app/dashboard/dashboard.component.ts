@@ -6,6 +6,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EChartsOption } from 'echarts';
 import { forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { User } from '../model/User';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   initialStart: Date;
   initialEnd: Date;
 
+  user: User;
 
 
   ngOnInit(): void {
@@ -49,7 +51,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.initialStart = data.dateStart;
             this.initialEnd = data.dateEnd;
             this.firstInstance = false;
-            console.log(this.firstInstance)
           }
           this.dateStart = data.dateStart;
           this.dateEnd = data.dateEnd;
@@ -87,5 +88,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
 
-
+  logout(){
+    this.dataModel.disconnect();
+  }
 }

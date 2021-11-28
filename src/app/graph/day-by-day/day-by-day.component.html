@@ -3,19 +3,19 @@
     <span class="title">Jour par jour</span>
     <div class="group">
       <span style="flex: 1 1 auto;">Ma consommation </span>
-      <span>{{consoTotal?.toFixed(2)}} kWh</span>
+      <span>{{consoTotal?.toFixed(3)}} kWh</span>
     </div>
     <div class="group">
       <span style="flex: 1 1 auto;">Moyenne </span>
-      <span>{{avgConsoTotal?.toFixed(2)}} kWh</span>
+      <span>{{avgConsoTotal?.toFixed(3)}} kWh</span>
     </div>
     <div class="group">
       <span style="flex: 1 1 auto;">Différence</span>
       <ng-container *ngIf="diffRate>0; else negative">
-        <span style="color: red">+{{diffRate?.toFixed(2)}}%</span>
+        <span style="color: red">+{{diffRate?.toFixed(3)}}%</span>
       </ng-container>
       <ng-template #negative>
-        <span style="color: green">{{diffRate?.toFixed(2)}}%</span>
+        <span style="color: green">{{diffRate?.toFixed(3)}}%</span>
       </ng-template>
     </div>
   </ng-container>
