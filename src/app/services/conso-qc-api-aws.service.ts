@@ -28,6 +28,9 @@ export class ConsoQCApiAWSService {
       })
     );
   }
+  connexion(id,mdp){
+  return this.httpClient.get(this.AWS_ENDPOINT+"connexion?id="+id+"&mdp="+mdp);
+}
 
   parseConsommationRow(res){
     const retValue: ConsommationROW[] = [];
