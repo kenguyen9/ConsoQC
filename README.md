@@ -1,5 +1,12 @@
 # ConsoQC
 
+Projet développé dans le cadre du cours INF6323 - Programmation Infonuagique Avancée
+
+Université du Québec en Outaouais
+
+Par Ken NGUYEN
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.1.
 
 ## Development server
