@@ -45,7 +45,6 @@ export class MetricsCompareComponent implements OnInit, OnDestroy {
       () => {
         this.tabsGroup = this.dataModel.tabsGroup;
         this.refreshData();
-        this.updateComponent();
       }
     )
   }
@@ -62,6 +61,9 @@ export class MetricsCompareComponent implements OnInit, OnDestroy {
   refreshData() {
     this.avgConso = this.dataModel.getAvgConso();
     this.selfConso = this.dataModel.getSelfConso();
+    if (this.avgConso && this.selfConso){
+      this.updateComponent();
+    }
   }
 
   updateComponent() {

@@ -34,6 +34,7 @@ import { LoginComponent } from './login/login.component';
 import { MetricsCompareComponent } from './graph/metrics-compare/metrics-compare.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DayByDayComponent } from './graph/day-by-day/day-by-day.component';
+import { InformationComponent } from './information/information.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { DayByDayComponent } from './graph/day-by-day/day-by-day.component';
     LineChartComponent,
     LoginComponent,
     MetricsCompareComponent,
-    DayByDayComponent
+    DayByDayComponent,
+    InformationComponent
   ],
   imports: [
     BrowserModule,

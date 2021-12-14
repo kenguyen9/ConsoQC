@@ -54,6 +54,11 @@ export class DayByDayComponent implements OnInit {
         this.updateComponent();
       }
     )
+    this.avgConso = this.dataModel.getAvgConso();
+    this.selfConso = this.dataModel.getSelfConso();
+    if (this.avgConso && this.selfConso){
+      this.updateComponent();
+    }
   }
 
   updateComponent() {

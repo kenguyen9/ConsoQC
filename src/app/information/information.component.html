@@ -1,0 +1,21 @@
+<div class="content">
+  <span style="font-size: xx-large;">
+    <mat-icon>electrical_services</mat-icon>
+    Conso QC
+  </span>
+  <div class="form">
+    <span class="form-title">Mes informations</span>
+    <mat-form-field appearance="fill">
+      <mat-label>Identifiant</mat-label>
+      <input matInput type="text" [value]="user.idClient" disabled>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Prénom</mat-label>
+      <input matInput type="text" [value]="user.prenom" disabled>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Nom</mat-label>
+      <input matInput type="text" [value]="user.nom" disabled>
+    </mat-form-field>
+  </div>
+</div>

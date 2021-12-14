@@ -1,3 +1,4 @@
+import { InformationComponent } from './information/information.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
@@ -9,6 +10,9 @@ const routes: Routes = [
   },
   {
     path:'Tableau de bord', component: DashboardComponent
+  },
+  {
+    path: 'Informations', component: InformationComponent
   },
   {
     path: '', redirectTo: 'Connexion', pathMatch:'full'
